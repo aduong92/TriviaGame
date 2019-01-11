@@ -19,22 +19,26 @@ var myQuestions = [
 
 var runningQuestion = 0; //current question
 var count = 0;
-var qst = $("#question");
 var ans = $("#answers");
-var userAnswer;
-var currentquestion = 0;
+var userAnswer= [];
 var correct = 0;
+var counter = 15;
 
-var q = myQuestions[runningQuestion];
+
 
 
 
 function renderQuestions() {
-    userAnswer = [];
-    qst.append("<p>" + q.question + "</p>");
+    var q = myQuestions[runningQuestion];
+
+    quest = document.getElementById("qst");
+            quest.innerHTML = q.question;
     
 }
 function renderButtons() {
+    event.preventDefault();
+    var q = myQuestions[runningQuestion];
+
     for (var i = 0; i < q.answers.length; i++) {
         var btn = document.createElement("p");
         btn.setAttribute('id', 'ans');
@@ -44,22 +48,23 @@ function renderButtons() {
         ans.append(btn);
     }
 }
-
-function nextQuestion (){  //next question
-    runningQuestion ++;
-}
-
-
 function myFunction(clicked_id){ //store answer to empty array
     event.preventDefault();
-    var uAnswer = clicked_id;
-    userAnswer.push(uAnswer);
-}
+    var q = myQuestions[runningQuestion];
 
-if(userAnswer === q.correctAnswer) { //check for correct answer
-    nextQuestion();
+    var uGuess = clicked_id;
+    if(uGuess == q.correctAnswer){
+        userWin();
+    }
+}
+function userWin() {
+    correct++;
+    runningQuestion++;
+
     renderQuestions();
 }
+
+
 
 
 $("#start").click(function () {
@@ -67,8 +72,7 @@ $("#start").click(function () {
     $('#time').show();
     $('#question').show();
     $('#answers').show();
-
-    var counter = 20;
+    
     setInterval(function () {
         counter--;
         if (counter >= 0) {
@@ -77,16 +81,14 @@ $("#start").click(function () {
         }
         if (counter === 0) {
             $('#time').html('out of time!');
+            
             clearInterval(counter);
         }
     }, 1000);
-    
+
+    setInterval();
     renderQuestions();
     renderButtons();
-    
-   
-   
-
 
 });
 
